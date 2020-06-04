@@ -9,3 +9,5 @@ def cala():
     for tmp in myList:
         total += tmp['price']
     return total
+
+# __all__ 约束了
