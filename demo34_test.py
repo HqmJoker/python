@@ -10,7 +10,7 @@
 # login()
 
 # 以下用法需要__all__导出模块
-# from user import *
-# user_center.login()
-import user
-user.user_center.login()
+# import user
+# user.user_center.login()
+from user import *
+user_center.login()
