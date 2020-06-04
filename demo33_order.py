@@ -10,4 +10,5 @@ def cala():
         total += tmp['price']
     return total
 
-# __all__ 约束了
+# __all__ 约束了此模块可导出的
+__all__ = ['myList']
