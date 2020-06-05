@@ -28,3 +28,16 @@ print(random.randint(1,100))
 import math 
 print(math.ceil(0.8))
 print(math.floor(0.8))
+
+# time
+import time
+print(time.localtime())
+# %y/%m/%d %H %M %S
+print(time.strftime("%Y-%m-%d %H:%M:%S"))
+
+# 路径相关/文件相关
+import os.path
+print(os.path.exists("demo39_library.py1"))
+print(os.path.exists("./user"))
+print(os.path.isfile("./user"))
+print(os.path.isfile("./user/user_center.py"))
