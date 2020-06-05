@@ -22,3 +22,9 @@ num = random.choice(range(1,100))
 print("num is %d"%(num))
 print(random.choice(['mike','michale', 'lucy']))
 print(random.randint(1,100))
+
+
+# math
+import math 
+print(math.ceil(0.8))
+print(math.floor(0.8))
