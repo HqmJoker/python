@@ -1,0 +1,79 @@
+# 获取所有数据，对应SQL：select * from User
+User.objects.all()
+
+# 匹配，对应SQL：select * from User where name = '运维咖啡吧'
+User.objects.filter(name='运维咖啡吧')
+
+# 不匹配，对应SQL：select * from User where name != '运维咖啡吧'
+User.objects.exclude(name='运维咖啡吧')
+
+# 获取单条数据（有且仅有一条，id唯一），对应SQL：select * from User where id = 724
+User.objects.get(id=123)
+# 获取总数，对应SQL：select count(1) from User
+User.objects.count()
+
+# 获取总数，对应SQL：select count(1) from User where name = '运维咖啡吧'
+User.objects.filter(name='运维咖啡吧').count()
+
+# 大于，>，对应SQL：select * from User where id > 724
+User.objects.filter(id__gt=724)
+
+# 大于等于，>=，对应SQL：select * from User where id >= 724
+User.objects.filter(id__gte=724)
+
+# 小于，<，对应SQL：select * from User where id < 724
+User.objects.filter(id__lt=724)
+
+# 小于等于，<=，对应SQL：select * from User where id <= 724
+User.objects.filter(id__lte=724)
+
+# 同时大于和小于， 1 < id < 10，对应SQL：select * from User where id > 1 and id < 10
+User.objects.filter(id__gt=1, id__lt=10)
+
+# 包含，in，对应SQL：select * from User where id in (11,22,33)
+User.objects.filter(id__in=[11, 22, 33])
+
+# 不包含，not in，对应SQL：select * from User where id not in (11,22,33)
+User.objects.exclude(id__in=[11, 22, 33])
+
+# 为空：isnull=True，对应SQL：select * from User where pub_date is null
+User.objects.filter(pub_date__isnull=True)
+
+# 不为空：isnull=False，对应SQL：select * from User where pub_date is not null
+User.objects.filter(pub_date__isnull=True)
+
+# 匹配，like，大小写敏感，对应SQL：select * from User where name like '%sre%'，SQL中大小写不敏感
+User.objects.filter(name__contains="sre")
+
+# 匹配，like，大小写不敏感，对应SQL：select * from User where name like '%sre%'，SQL中大小写不敏感
+User.objects.filter(name__icontains="sre")
+
+# 不匹配，大小写敏感，对应SQL：select * from User where name not like '%sre%'，SQL中大小写不敏感
+User.objects.exclude(name__contains="sre")
+
+# 不匹配，大小写不敏感，对应SQL：select * from User where name not like '%sre%'，SQL中大小写不敏感
+User.objects.exclude(name__icontains="sre")
+
+# 范围，between and，对应SQL：select * from User where id between 3 and 8
+User.objects.filter(id__range=[3, 8])
+
+# 以什么开头，大小写敏感，对应SQL：select * from User where name like 'sh%'，SQL中大小写不敏感
+User.objects.filter(name__startswith='sre')
+
+# 以什么开头，大小写不敏感，对应SQL：select * from User where name like 'sh%'，SQL中大小写不敏感
+User.objects.filter(name__istartswith='sre')
+
+# 以什么结尾，大小写敏感，对应SQL：select * from User where name like '%sre'，SQL中大小写不敏感
+User.objects.filter(name__endswith='sre')
+
+# 以什么结尾，大小写不敏感，对应SQL：select * from User where name like '%sre'，SQL中大小写不敏感
+User.objects.filter(name__iendswith='sre')
+
+# 排序，order by，正序，对应SQL：select * from User where name = '运维咖啡吧' order by id
+User.objects.filter(name='运维咖啡吧').order_by('id')
+
+# 多级排序，order by，先按name进行正序排列，如果name一致则再按照id倒叙排列
+User.objects.filter(name='运维咖啡吧').order_by('name','-id')
+
+# 排序，order by，倒序，对应SQL：select * from User where name = '运维咖啡吧' order by id desc
+User.objects.filter(name='运维咖啡吧').order_by('-id')
