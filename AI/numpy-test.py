@@ -13,3 +13,9 @@ print(arr.shape) #输出结果表示当前数组为一维数组，有5个元素
 
 #二维数组
 np.array([[1,2,3], [4,5,6]])
+
+#numpy.array数组类型自动向下转换(int->float->str)
+test_array = np.array([1,2,3,4,'5']);
+print(test_array) # ['1' '2' '3' '4' '5']
+test_array1 = np.array([1,2,3,4,5.0]);
+print(test_array1) # [1. 2. 3. 4. 5.]
