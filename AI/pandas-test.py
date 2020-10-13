@@ -24,6 +24,31 @@ age1['Allen, Mr. William Henry']
 df = df.reset_index() # 重置索引
 df[['Age', 'Fare']][:5]
 
+#iloc函数相关
 df.iloc[0] # 获取第1行数据(非表头)
 df.iloc[:5] # 获取前5行数据(非表头)
 df.iloc[:5,1:4] # 获取前5行数据,[1:4]:获取1,2,3列的字段数据（默认从第0列开始）
+#loc函数相关
+df = df.set_index('Name')
+df.loc['Heikkinen, Miss. Laina'] # 获取对应索引的行信息
+df.loc['Heikkinen, Miss. Laina', 'Fare'] # 获取对应索引的行指定字段信息
+df.loc[['Heikkinen, Miss. Laina', 'Allen, Mr. William Henry']] # 获取多个索引的行指定字段信息
+df.loc['Heikkinen, Miss. Laina':'Allen, Mr. William Henry'] # 获取多个索引的区间的行指定字段信息
+
+df['Fare']>40 # 显示票价大于40
+df[df['Fare']>40][:5] # 显示票价大于40的前5条数据
+df[df['Sex'] == 'male'][:5] # 男性的前5条数据
+df.loc[df['Sex'] == 'male', 'Age'].mean() # 找到所有男性的平均年龄
+(df['Age']>70).sum() # 计算年龄大于70的乘客的总数
+
+#自定义DataFrame数据
+data = {'country':['China', 'America', 'India'],
+       'population':[14, 3, 12]}
+df_data = pd.DataFrame(data)
+print(df_data)
+
+#pandas配置对象
+pd.get_option('display.max_rows')
+pd.set_option('display.max_rows', 6)
+#pd.Series(index = range(0,100)) # Series相当二维数据中某一行或一列
+pd.get_option('display.max_columns')
