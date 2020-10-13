@@ -48,6 +48,6 @@ print(bool_arr[np.where(bool_arr>30)]) # [40 50 60 70 80 90] 获取符合条件�
 x = np.array([1,1,1,5])
 y = np.array([1,1,1,0])
 print(x == y) # array([ True,  True,  True, False])
-print(np.logical_and(x, y)) # 逻辑与 True  True  True  True]
+print(np.logical_and(x, y)) # 逻辑与 [ True  True  True  False]
 print(np.logical_or(x, y)) # 逻辑或，[ True  True  True  True]
 
