@@ -1,4 +1,5 @@
 import pandas as pd # 引入数据分析处理库pandas
+import numpy as np
 # (读取结果对象属性参考文档)https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
 df = pd.read_csv('./train.csv')
 
@@ -85,4 +86,30 @@ df['Underaged'] = df['Age'] <= 18
 df.pivot_table(index='Underaged', columns='Sex', values='Survived')
 
 # groupby 操作
+gb = pd.DataFrame({
+    'key':['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'],
+    'data':[0, 5, 10, 5, 10, 15, 10, 15, 20]
+})
+# 求 A,B,C的总和
+for key in ['A', 'B', 'C']:
+    print(key, gb[gb['key']==key].sum())
+gb.groupby('key').sum()
+# 求 A,B,C的均值
+gb.groupby('key').aggregate(np.mean)
 
+# 求船上不同性别的平均年龄
+df.groupby('Sex')['Age'].mean()
+df.pivot_table(index='Sex', values='Age')
+
+gb_test = pd.DataFrame({
+    'A':['foo', 'bar', 'foo', 'bar', 'foo', 'bar', 'foo', 'foo'],
+    'B':['one','one','two','three','two','two','one','three'],
+    'C':np.random.randn(8),
+    'D':np.random.randn(8)
+})
+print(gb_test)
+gb_test.groupby('A').count() # 统计A的groupby对应的数量
+gb_test['A'].value_counts() # 统计A的groupby对应的数量
+gb_test.groupby(['A','B']).count()# 统计多列的groupby对应的数量
+gb_test.groupby(['A','B']).sum()# 统计多列的groupby总和
+gb_test.groupby(['A','B']).aggregate(np.mean)# 统计多列的groupby均值
