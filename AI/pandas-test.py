@@ -1,4 +1,3 @@
-import pandas as pd # 引入数据分析处理库pandas
 # (读取结果对象属性参考文档)https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
 df = pd.read_csv('./train.csv')
 
@@ -49,6 +48,51 @@ print(df_data)
 
 #pandas配置对象
 pd.get_option('display.max_rows')
-pd.set_option('display.max_rows', 6)
+pd.set_option('display.max_rows', 10)
 #pd.Series(index = range(0,100)) # Series相当二维数据中某一行或一列
 pd.get_option('display.max_columns')
+
+#danpas.DataTarget对象的相关统计指标
+df.describe() # 数量，均值，标准差，最小值，最大值
+df.cov() # 协方差矩阵
+df.corr() # 相关系数
+df['Sex'].value_counts() # 统计性别列所有属性数据
+df['Sex'].value_counts(ascending = True) # 统计性别列所有属性数据，数据少的先显示
+df['Age'].value_counts(ascending = True) # 统计年龄列所有属性数据，数据少的先显示
+df['Age'].value_counts(ascending = True, bins = 5) # 统计年龄列所有属性数据，平均分成5组，数据少的先显示
+
+#数据透视表
+# 测试数据
+testData = pd.DataFrame({'Month':['January', 'January', 'January', 'January',
+                                   'February', 'February', 'February', 'February',
+                                   'March', 'March', 'March', 'March'],
+                          'Categories':['Transportation', 'Grocery', 'HouseHold', 'Entertainment',
+                                       'Transportation', 'Grocery', 'HouseHold', 'Entertainment',
+                                       'Transportation', 'Grocery', 'HouseHold', 'Entertainment'],
+                          'Amount':[74., 235., 175., 100., 115., 240., 225., 125., 90., 26., 200., 120.]
+                         })
+print(testData)
+test_pivot = testData.pivot(index = 'Categories', columns='Month', values='Amount') # 统计每个月花费在各项用途上的金额分别是多少
+print(test_pivot)
+test_pivot.sum(axis = 1) # 统计这几个月每个类型花费总金额
+test_pivot.sum()# 统计每个月花费总金额
+df.pivot_table(index='Sex', columns='Pclass', values='Fare') # 按乘客性别分别统计各个舱位(Pclass)购票的平均价格
+df.pivot_table(index='Sex', columns='Pclass', values='Fare', aggfunc='max') # 按乘客性别分别统计各个舱位(Pclass)购票的最高价格
+df.pivot_table(index='Sex', columns='Pclass', values='Fare', aggfunc='count') # 按乘客性别分别统计各个舱位(Pclass)购票的人数
+#统计未成年和成年人不同性别的平局获救可能性
+df['Underaged'] = df['Age'] > 18
+print(111111)
+print((df['Age']>18).sum())
+print((df['Age']==18).sum())
+print((df['Age']<18).sum())
+df.pivot_table(index='Underaged', columns='Sex', values='Survived')
+df.pivot_table(index='Underaged', columns='Sex', values='Survived', aggfunc='count') 
+'''
+<=
+False	246	506
+True	68	71
+
+>
+False	121	195
+True	193	382
+'''
