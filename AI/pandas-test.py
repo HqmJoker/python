@@ -1,3 +1,4 @@
+import pandas as pd # 引入数据分析处理库pandas
 # (读取结果对象属性参考文档)https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
 df = pd.read_csv('./train.csv')
 
@@ -80,19 +81,8 @@ df.pivot_table(index='Sex', columns='Pclass', values='Fare') # 按乘客性别�
 df.pivot_table(index='Sex', columns='Pclass', values='Fare', aggfunc='max') # 按乘客性别分别统计各个舱位(Pclass)购票的最高价格
 df.pivot_table(index='Sex', columns='Pclass', values='Fare', aggfunc='count') # 按乘客性别分别统计各个舱位(Pclass)购票的人数
 #统计未成年和成年人不同性别的平局获救可能性
-df['Underaged'] = df['Age'] > 18
-print(111111)
-print((df['Age']>18).sum())
-print((df['Age']==18).sum())
-print((df['Age']<18).sum())
+df['Underaged'] = df['Age'] <= 18
 df.pivot_table(index='Underaged', columns='Sex', values='Survived')
-df.pivot_table(index='Underaged', columns='Sex', values='Survived', aggfunc='count') 
-'''
-<=
-False	246	506
-True	68	71
 
->
-False	121	195
-True	193	382
-'''
+# groupby 操作
+
