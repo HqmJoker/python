@@ -218,7 +218,7 @@ print(mem_usage(gl_float))
 print(mem_usage(coverted_float))
 # object(字符串)类型
 gl_obj = gl.select_dtypes(include = ['object']).copy()
-print(gl_obj.describe())
+gl_obj.describe()
 dow = gl_obj.day_of_week
 dow_cat = dow.astype('category')
 dow_cat.head()
@@ -229,3 +229,10 @@ print(mem_usage(dow_cat))
 converted_obj = pd.DataFrame()
 for col in gl_obj.columns:
     num_unique_values = len(gl_obj[col].unique())
+    num_total_values = len(gl_obj[col])
+    if num_unique_values / num_total_values < 0.5:
+        converted_obj.loc[:,col] = gl_obj[col].astype('category')
+    else:
+        converted_obj.loc[:,col] = gl_obj[col]
+print(mem_usage(gl_obj))
+print(mem_usage(converted_obj))
