@@ -185,3 +185,47 @@ data_paint.plot(ax = axes[1], kind = 'barh') # 绘制第二个子图，axes[1]�
 df_paint1 = pd.DataFrame(np.random.rand(6, 4), index = ['one', 'two', 'three', 'four', 'five', 'six'],
                          columns = pd.Index(['A', 'B', 'C', 'D'], name = 'Genus'))
 df_paint1.plot(kind = 'bar')
+
+# 大数据处理技巧
+gl = pd.read_csv('./game_logs.csv')
+gl.head()
+print(gl.shape) # 输出样本数据行、列数(26265, 161)
+gl.info(memory_usage = 'deep') # memory = deep表示要详细地展示当前数据占用的内存 dtypes: float64(85), int64(3), object(73) memory usage: 94.0 MB
+# 计算各种数据类型平均占用内存
+for dtype in ['float64', 'int64', 'object']:
+    selected_dtype = gl.select_dtypes(include = [dtype])
+    mean_usage_b = selected_dtype.memory_usage(deep = True).mean()
+    mean_usage_mb = mean_usage_b/1024**2 # 转换为MB, 等同于mean_usage_b/1024/1024
+    print('平均内存占用', dtype, mean_usage_mb)
+# 把int64数据类型转换成int32
+def mem_usage(pandas_obj):
+    if isinstance(pandas_obj, pd.DataFrame): # 如果参数padans_obj是pd.DataFrame的实例，或者padans_obj是pd.DataFrame类的子类的一个实例， 返回True。
+        usage_b = pandas_obj.memory_usage(deep = True).sum()
+    else:
+        usage_b = pandas_obj.memory_usage(deep = True)
+    usage_mb = usage_b/1024**2
+    return '{:3.2f} MB'.format(usage_mb) # 表示三位数，其中2位为小数 格式化输出 "{0:H^20.3f}".format(12345.67890)->'HHHHH12345.679HHHHHH'
+
+# 大数据量 int64 向下类型转换内存占用情况
+gl_int = gl.select_dtypes(include = ['int64'])
+coverted_int = gl_int.apply(pd.to_numeric, downcast = 'integer') # downcast = 'integer'自动向下类型转换
+print(mem_usage(gl_int))
+print(mem_usage(coverted_int))
+# 大数据量 float64 向下类型转换内存占用情况
+gl_float = gl.select_dtypes(include = ['float64'])
+coverted_float = gl_float.apply(pd.to_numeric, downcast = 'float') # downcast = 'float'自动向下类型转换
+print(mem_usage(gl_float))
+print(mem_usage(coverted_float))
+# object(字符串)类型
+gl_obj = gl.select_dtypes(include = ['object']).copy()
+print(gl_obj.describe())
+dow = gl_obj.day_of_week
+dow_cat = dow.astype('category')
+dow_cat.head()
+dow_cat.head(10).cat.codes
+print(mem_usage(dow))
+print(mem_usage(dow_cat))
+# 大数据量 object 向下类型转换内存占用情况
+converted_obj = pd.DataFrame()
+for col in gl_obj.columns:
+    num_unique_values = len(gl_obj[col].unique())
