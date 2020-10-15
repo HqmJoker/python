@@ -155,3 +155,33 @@ row_is_minor = df.apply(is_minor, axis=1)
 print(row_is_minor)
 
 # 时间操作
+ts = pd.Timestamp('2020-10-14') # 2020-10-14 00:00:00
+ts.month # 10
+ts.day # 14
+ts + pd.Timedelta('5 days') # Timestamp('2020-10-19 00:00:00')
+
+s = pd.Series(['2020-10-14 00:00:00', '2020-10-15 00:00:00', '2020-10-16 00:00:00'])
+ts1 = pd.to_datetime(s)
+print(ts1)
+ts1.dt.hour # 输出列表对应小时
+ts1.dt.weekday # 输出列表对应星期几，默认从0开始，即0对应星期一
+pd.Series(pd.date_range(start='2020-10-14', periods=10, freq='12H')) # 从start(2020-10-14)开始生成periods(10)条数据，每条数据相隔freq(12H)
+
+# 绘图操作
+%matplotlib inline
+df_paint = pd.DataFrame(
+    np.random.randn(10, 4).cumsum(0),
+    index = np.arange(0 ,100, 10),
+    columns = ['A', 'B', 'C', 'D']
+)
+print(df_paint)
+df_paint.plot() # 绘制图标
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(2, 1) # 创建子图2行一列的形式, fig参数不可删除（删除后会报错：https://blog.csdn.net/xavier_muse/article/details/83859272）
+data_paint = pd.Series(np.random.rand(16), index = list('abcdefghijklmnop'))
+data_paint.plot(ax = axes[0], kind = 'bar') # 绘制第一个子图，axes[0]为第一个子图
+data_paint.plot(ax = axes[1], kind = 'barh') # 绘制第二个子图，axes[1]为第二个子图
+# 绘制多条形图
+df_paint1 = pd.DataFrame(np.random.rand(6, 4), index = ['one', 'two', 'three', 'four', 'five', 'six'],
+                         columns = pd.Index(['A', 'B', 'C', 'D'], name = 'Genus'))
+df_paint1.plot(kind = 'bar')
