@@ -78,3 +78,10 @@ ax.spines['right'].set_visible(False) # 去掉右边线
 plt.tick_params(bottom=False, top=False, left=True, right=False) # 隐藏坐标轴刻度线
 plt.grid() # 加入网格线
 plt.hist(x2, alpha=0.5, bins=bins) # 绘制直方图
+plt.clf() # 清空画布
+x3 = np.arange(10)
+for i in range(1, 4):
+    plt.plot(x, i*x**2, label=' Group %d' %i)
+plt.legend(loc='best')
+
+# 常用图表绘制
