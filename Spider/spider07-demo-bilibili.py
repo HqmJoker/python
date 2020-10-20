@@ -41,7 +41,8 @@ def save_to_excel(soup):
         sheet.write(n, 5, item_date)
         n = n + 1
 
-browser = webdriver.Chrome()
+# browser = webdriver.Chrome()
+browser = webdriver.PhantomJS()
 WAIT = wdWait(browser, 10)
 browser.get('https://www.bilibili.com/')
 
@@ -49,16 +50,8 @@ browser.get('https://www.bilibili.com/')
 js = "document.getElementsByClassName('nav-search-box')[0].style.display='block'"
 # 执行js代码
 browser.execute_script(js)
+# browser.set_window_size(1400, 900) 同样解决浏览器窗口太小导致元素不可见问题
 
-# 关键字搜索
-input = WAIT.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#nav_searchform > input')))
-submit = WAIT.until(EC.element_to_be_clickable((By.XPATH, '//form[@id="nav_searchform"]//button')))
-input.send_keys('蔡徐坤 篮球')
-submit.click()
-# 打开并切换到新窗口
-all_h = browser.window_handles
-browser.switch_to.window(all_h[1])
-total = WAIT.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#server-search-app #all-list ul.pages > li.page-item.last > button')))
 # 创建excel工作空间
 book = xlwt.Workbook(encoding='utf-8', style_compression=0)
 sheet = book.add_sheet('b站蔡徐坤打篮球视频列表', cell_overwrite_ok=True)
@@ -69,6 +62,17 @@ sheet.write(0, 3, '观看次数')
 sheet.write(0, 4, '弹幕')
 sheet.write(0, 5, '日期')
 n = 1
+
+# 关键字搜索
+input = WAIT.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#nav_searchform > input')))
+submit = WAIT.until(EC.element_to_be_clickable((By.XPATH, '//form[@id="nav_searchform"]//button')))
+input.send_keys('蔡徐坤 篮球')
+submit.click()
+# 打开并切换到新窗口
+all_h = browser.window_handles
+browser.switch_to.window(all_h[1])
+total = WAIT.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#server-search-app #all-list ul.pages > li.page-item.last > button')))
+
 # 循环遍历页码，获取所有页面视频
 try:
     for i in range(1, int(total.text) + 1):
@@ -78,7 +82,7 @@ except TimeoutException:
     # browser.refresh()
     # next_page(i) 
 finally:
-    book.save(u'b站蔡徐坤打篮球视频.xls')
+    book.save(u'蔡徐坤篮球.xls')
     print('结束')
     # browser.close()
     
