@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import xlwt
+import time
 
 def main(page):
     url = 'https://movie.douban.com/top250?start='+str(page*25)+'&filter='
@@ -38,18 +39,23 @@ def save_to_excel(soup):
         sheet.write(n, 5, item_intr)
         n = n + 1
 
-# 创建excel工作空间
-book = xlwt.Workbook(encoding='utf-8', style_compression=0)
-sheet = book.add_sheet('豆瓣电影top250', cell_overwrite_ok=True)
-sheet.write(0, 0, '名称')
-sheet.write(0, 1, '图片')
-sheet.write(0, 2, '排名')
-sheet.write(0, 3, '评分')
-sheet.write(0, 4, '作者')
-sheet.write(0, 5, '简介')
-n = 1
+if __name__ == '__main__':
+    startTime = time.time()
+    # 创建excel工作空间
+    book = xlwt.Workbook(encoding='utf-8', style_compression=0)
+    sheet = book.add_sheet('豆瓣电影top250', cell_overwrite_ok=True)
+    sheet.write(0, 0, '名称')
+    sheet.write(0, 1, '图片')
+    sheet.write(0, 2, '排名')
+    sheet.write(0, 3, '评分')
+    sheet.write(0, 4, '作者')
+    sheet.write(0, 5, '简介')
+    n = 1
 
-for i in range(0,10):
-    main(i)
-# 保存成excel
-book.save(u'豆瓣最受欢迎的250部电影.xls')
+    for i in range(0,10):
+        main(i)
+    # 保存成excel
+    book.save(u'豆瓣最受欢迎的250部电影.xls')
+    endTime = time.time()
+    dtime = endTime - startTime
+    print("程序运行时间：%s s" % dtime)  # 4.036666631698608 s
