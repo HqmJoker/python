@@ -1,4 +1,6 @@
 # 解决登录/请求时图片验证
+'''
+# 1.0
 from PIL import Image
 import pytesseract
 
@@ -61,6 +63,18 @@ result2 = pytesseract.image_to_string(convert_img(captcha2, 150))
 print('result2:'+result2)
 # 图片4
 captcha3 = Image.open('./source/imgs/3.webp')
-convert_img1(captcha3, 150).show()
 result3 = pytesseract.image_to_string(convert_img1(captcha3, 150))
 print('result3:'+result3)
+'''
+
+# 2.0 使用opencv提升验证准确率
+# from PIL import Image
+import pytesseract
+import cv2
+
+img = cv2.imread('./source/imgs/2.png')
+img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 灰值化处理
+th1 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 1) # 二值化处理
+cv2.imshow('test', th1)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
