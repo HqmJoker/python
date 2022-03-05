@@ -17,7 +17,8 @@ def main(url):
     sys.setrecursionlimit(1000000)
     data = []
     html = request_douban(url)
-    soup = BeautifulSoup(html, 'lxml')
+    # soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, 'html.parser')
     list = soup.find(class_='grid_view').find_all('li')
     for item in list:
         item_name = item.find(class_='title').string
@@ -25,9 +26,10 @@ def main(url):
         item_index = item.find(class_='').string
         item_score = item.find(class_='rating_num').string
         item_author = item.find('p').text
+        item_intr = ''
         if (item.find(class_='inq') != None):
             item_intr = item.find(class_='inq').string
-        # print('爬取电影：' + item_index + ' | ' + item_name + ' | ' + item_score + ' | ' + item_intr)
+        print('爬取电影：' + item_index + ' | ' + item_name + ' | ' + item_score + ' | ' + item_intr)
         item = {
             'item_index': item_index,
             'item_name': item_name,
@@ -65,7 +67,7 @@ if __name__ == '__main__':
         sheet.write(index+1, 3, item['item_score'])
         sheet.write(index+1, 4, item['item_author'])
         sheet.write(index+1, 5, item['item_intr'])
-    book.save(u'豆瓣最受欢迎的250部电影-mul.xls')
+    book.save(u'豆瓣最受欢迎的250部电影-mul.xlsx')
 
     endTime = time.time()
     dtime = endTime - startTime
